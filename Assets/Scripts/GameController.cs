@@ -95,18 +95,13 @@ public class GameController : MonoBehaviour
     void RestartClick()
     {
 
-
     }
    
     void Awake()
     {
-
         currentturn = Color.red;
         playerSide = Color.red;
         opponentSide = Color.blue;
-
-
-
     }
 
 
@@ -133,7 +128,6 @@ public class GameController : MonoBehaviour
     }
     public void AiTurn()
     {
-      
         
         EndTurn();
 
