@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class GameController : MonoBehaviour
 {
@@ -14,18 +15,36 @@ public class GameController : MonoBehaviour
     public Text OCounter;
     public Text TieCounter;
     public Button restartButton;
+    public Button undoButton;
     public Button[] dropButtons = new Button[6];
-    // int number = 0;
     public int xcounter;
     public int ocounter;
     public int tiecounter;
     public Rows[] visualboard = new Rows[6];
+    public int[] moves;
+    public Bitboard bitboards = new Bitboard();
 
 
+    void Start()
+    {
+        Ai Ai_ = new Ai();
+        Ai = Ai_;
+        undoButton.onClick.AddListener(() => undoMove());
+        for (int i = 0; i < dropButtons.Length; i++)
+        {
+            int capturedIterator = i;
+            dropButtons[i].onClick.AddListener(() => MakeMove(capturedIterator));
+        }
 
+    }
+    private void undoMove()
+    {
+        bitboards.undoMove();
+    }
     private void MakeMove(int columnindex)
     {
-        Debug.Log(columnindex);
+      
+        bitboards.makebitboardMove(columnindex); 
         
         for (int i = 0; i<6; i++)
         {
@@ -47,6 +66,7 @@ public class GameController : MonoBehaviour
 
             }
         }
+       
         CheckFullRows();
         ChangeSides();
 
@@ -71,47 +91,16 @@ public class GameController : MonoBehaviour
     }
 
 
-    void Start()
-    {
-        Ai Ai_ = new Ai();
-        Ai = Ai_;
-       
-            for (int i = 0; i < dropButtons.Length; i++)
-            {
-                int capturedIterator = i;
-                dropButtons[i].onClick.AddListener(() => MakeMove(capturedIterator));
-            }
-        
-       // restartButton.onClick.AddListener(RestartClick);
-
-        // AiTurn();
-
-    }
+   
     void RestartClick()
     {
-      /*  for (int i = 0; i < buttonlist.Length; i++)
-        {
-            buttonlist[i].GetComponentInParent<Button>().interactable = true;
-            buttonlist[i].text = "";
-        }
-        WinText.text = "";
-        currentturn = Color.red;
-*/
 
 
     }
-    /*public void SetGameControllerReferenceButtons()
-    {
-        for (int i = 0; i < buttonlist.Length; i++)
-        {
-            buttonlist[i].GetComponentInParent<GridSpace>().SetGameControllerReference(this);
-
-        }
-    }*/
+   
     void Awake()
     {
 
-        //SetGameControllerReferenceButtons();
         currentturn = Color.red;
         playerSide = Color.red;
         opponentSide = Color.blue;
@@ -129,8 +118,7 @@ public class GameController : MonoBehaviour
     public void EndTurn()
     {
         
-       //if end  
-        //else { ChangeSides(); }
+ 
 
     }
 
@@ -145,13 +133,8 @@ public class GameController : MonoBehaviour
     }
     public void AiTurn()
     {
-        //int aichoice = Ai.Aiturn(buttonlist, "O", "X");
-       // int aichoice = Ai.findBestMove(buttonlist);
-        // Debug.Log(aichoice);
-        //buttonlist[aichoice].GetComponentInParent<Button>().interactable = false;
-        //buttonlist[aichoice].text = "O";
-
-
+      
+        
         EndTurn();
 
     }
